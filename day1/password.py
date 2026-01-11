@@ -51,15 +51,20 @@ def create_dial(num, cycle=True, start_pos=0):
     
     return start_node
     
-def spin_dial(pointer, instruction):
+def spin_dial(pointer, instruction, num_zeros):
     steps = int(instruction[1:])
     if instruction[0] == 'R':
         for _ in range(steps):
             pointer = pointer.next
+            if pointer.val == 0:
+                num_zeros += 1
+            
     else:
         for _ in range(steps):
             pointer = pointer.prev
-    return pointer
+            if pointer.val == 0:
+                num_zeros += 1
+    return pointer, num_zeros
 
 def main():
     num = 100
@@ -73,9 +78,7 @@ def main():
     num_zeros = 0
     
     for instruction in instructions[0]:
-        pointer = spin_dial(pointer, instruction)
-        if pointer.val == 0:
-            num_zeros += 1
+        pointer, num_zeros = spin_dial(pointer, instruction, num_zeros)
     
     print("Number of times we ended on zero: ", num_zeros)
 
