@@ -19,7 +19,6 @@ class Node:
         self.next = next
 
 def insert_node_at_end(val, head):
-    # insert a new node at the end of the doubly linked list
     new_node = Node(val=val, prev=head)
     head.next = new_node
     return new_node
@@ -34,11 +33,7 @@ def traverse(head, val):
         visited.add(head)
         if head.val==val:
             return head
-        
-        # print("current node val: ", head.val)
-        # print("node.next: ", head.next.val)
-        # print("node.prev", head.prev.val)
-        
+                
         head = head.next
     
 def create_dial(num, cycle=True, start_pos=0):
