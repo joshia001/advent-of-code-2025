@@ -56,27 +56,29 @@ def create_dial(num, cycle=True, start_pos=0):
     
     return start_node
     
-    
+def spin_dial(pointer, instruction):
+    steps = int(instruction[1:])
+    if instruction[0] == 'R':
+        for _ in range(steps):
+            pointer = pointer.next
+    else:
+        for _ in range(steps):
+            pointer = pointer.prev
+    return pointer
+
 def main():
     num = 100
     start_pos = 50
     input_file_path = "day1\day1input.txt"
     
     pointer = create_dial(num, start_pos=start_pos)
-    print(pointer)
     
     instructions = pd.read_csv(input_file_path, header=None)
     
     num_zeros = 0
     
     for instruction in instructions[0]:
-        steps = int(instruction[1:])
-        if instruction[0] == 'R':
-            for _ in range(steps):
-                pointer = pointer.next
-        else:
-            for _ in range(steps):
-                pointer = pointer.prev
+        pointer = spin_dial(pointer, instruction)
         if pointer.val == 0:
             num_zeros += 1
     
