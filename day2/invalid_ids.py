@@ -16,15 +16,19 @@ def main():
             
             id = str(id)
             
-            # only bother with ids that are of even length
-            if len(id) % 2 != 0:
-                continue
-                        
-            if id[:len(id)//2] == id[len(id)//2:]:
-                # protect against duplicate or overlapping id ranges
-                if id not in invalid_ids: 
-                    invalid_ids.append(int(id))
+            substring = ''
+            for i in range(len(id)//2):
+                substring += id[i]
                 
+                if len(id) % len(substring) != 0:
+                    continue
+                
+                # if id is a multiple of the substring, then it must be invalid
+                if substring * (len(id) // len(substring)) == id:
+                    if id not in invalid_ids:
+                        invalid_ids.append(int(id))
+                        break
+                                                     
     print(f'Sum of all invalid ids: {sum(invalid_ids)}')                
     
 if __name__ == "__main__":
