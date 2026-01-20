@@ -15,7 +15,7 @@ def get_neighbours(row, col):
         if 0 <= row + d[0] <= grid_size[0]-1 and 0 <= col + d[1] <= grid_size[1]-1:
             if grid[row + d[0]][col + d[1]] == "@":
                 neighbours.add((row+d[0], col+d[1]))
-    return neighbours, len(neighbours)
+    return neighbours
 
 def num_adj_rolls(neighbours):
     adj_rolls = 0
@@ -32,24 +32,24 @@ def main():
     for row in range(len(grid)):
         for col in range(len(grid[0])):
             if grid[row][col] == "@":
-                neighbours, adj_rolls = get_neighbours(row, col)
+                neighbours = get_neighbours(row, col)
+                adj_rolls = len(neighbours)
                 if adj_rolls < 4:
-                    queue.append([neighbours, adj_rolls])
+                    queue.append(neighbours)
                 else:
                     rolls_map[(row, col)] = adj_rolls
   
     while queue:
         res = queue.popleft()
         num_can_remove += 1
-        for coord in res[0]:
-            if coord in rolls_map.keys():
+        for coord in res:
+            if coord in rolls_map:
                 rolls_map[coord] -= 1
                 if rolls_map[coord] < 4:
-                    neighbours, _ = get_neighbours(coord[0], coord[1])
-                    queue.append([neighbours, rolls_map[coord]])
+                    neighbours = get_neighbours(coord[0], coord[1])
+                    queue.append(neighbours)
                     del rolls_map[coord]
-    print(grid)
-    
+                        
     print(f"Rolls that can be accessed by a forklift: {num_can_remove}")
             
 if __name__ == '__main__':
